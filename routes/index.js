@@ -4,7 +4,9 @@ var async =require('async')
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
-//auto
+//auto 第一次
+//auto 第一次
+//auto 第一次
     async.auto({
         get_data: function(callback) {
             console.log('in get_data');
