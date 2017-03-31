@@ -4,7 +4,7 @@ var async =require('async')
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
-
+//auto
     async.auto({
         get_data: function(callback) {
             console.log('in get_data');
