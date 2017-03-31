@@ -1,41 +1,36 @@
 var express = require('express');
 var router = express.Router();
-var async =require('async')
+var async = require('async')
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
 
-//auto 第一次
-//auto 第一次
-//auto 第一次
+
+    //auto 适合复杂逻辑，需要Parallel又需要waterfull
     async.auto({
-        get_data: function(callback) {
-            console.log('in get_data');
-            // async code to get some data
+        func1: function (callback) {
+             console.log('in func1');
             callback(null, 'data', 'converted to array');
         },
-        make_folder: function(callback) {
-            console.log('in make_folder');
-            // async code to create a directory to store a file in
-            // this is run at the same time as getting the data
-            callback(null, 'folder');
+
+        func2: function (callback) {
+             console.log('in func2');
+            callback(null, { "puncha": "during" });
         },
-        write_file: ['get_data', 'make_folder', function(results, callback) {
-            console.log('in write_file', JSON.stringify(results));
-            // once there is some data and the directory exists,
-            // write the data to a file in the directory
-            callback(null, 'filename');
+        func3: ["func2", function (results, callback) {
+           console.log('in func3', JSON.stringify(results));
+            callback(null, '3');
         }],
-        email_link: ['write_file', function(results, callback) {
-            console.log('in email_link', JSON.stringify(results));
-            // once the file is written let's email a link to it...
-            // results.write_file contains the filename returned by write_file.
-            callback(null, {'file':results.write_file, 'email':'user@example.com'});
+        func4: ["func1", "func3", function (results, callback) {
+             console.log('in func4', JSON.stringify(results));
+          callback(null, {'file':results.func3, 'email':'user@example.com'});
         }]
-    }, function(err, results) {
+    }, function (err, results) {
         console.log('err = ', err);
         console.log('results = ', results);
     });
-  res.render('index', { title: 'Express' });
+
+
+    res.render('index', { title: 'Express' });
 });
 
 module.exports = router;
